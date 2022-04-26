@@ -2,9 +2,11 @@ package com.example.memorygame
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.RadioGroup
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -52,9 +54,37 @@ private  lateinit var movesTV:TextView
                 }else{
                     setupBoard()
                 }
+
+                return  true
+            }
+
+            R.id.mi_new_size ->{
+
+showNewSizeDialog()
+                return  true
+
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun showNewSizeDialog() {
+        val sizeView = LayoutInflater.from(this).inflate(R.layout.show_size,null)
+        val radioGroupSize: RadioGroup = sizeView.findViewById<RadioGroup>(R.id.rg_choose_size)
+    when (boardSize){
+        BoardSize.EASY ->  radioGroupSize.check(R.id.rb_easy)
+        BoardSize.MEDIUM ->  radioGroupSize.check(R.id.rb_medium)
+        BoardSize.HARD->  radioGroupSize.check(R.id.rb_hard)
+
+    }
+            showAlertDialog("Choose new size",sizeView, View.OnClickListener {
+   boardSize = when (radioGroupSize.checkedRadioButtonId){
+       R.id.rb_easy -> BoardSize.EASY
+       R.id.rb_medium -> BoardSize.MEDIUM
+       else ->     BoardSize.HARD
+   }
+                setupBoard()
+        })
     }
 
     private fun showAlertDialog(title:String, view:View?,positiveClickListener: View.OnClickListener) {
