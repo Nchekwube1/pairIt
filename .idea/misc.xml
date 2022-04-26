@@ -3,8 +3,20 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.138" />
         <entry key="app/src/main/res/drawable/ic_face.xml" value="0.138" />
+        <entry key="app/src/main/res/drawable/ic_flash.xml" value="0.138" />
+        <entry key="app/src/main/res/drawable/ic_flight.xml" value="0.138" />
         <entry key="app/src/main/res/drawable/ic_flower.xml" value="0.138" />
+        <entry key="app/src/main/res/drawable/ic_gift.xml" value="0.138" />
+        <entry key="app/src/main/res/drawable/ic_heart.xml" value="0.138" />
+        <entry key="app/src/main/res/drawable/ic_home.xml" value="0.138" />
+        <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.138" />
+        <entry key="app/src/main/res/drawable/ic_moon.xml" value="0.138" />
+        <entry key="app/src/main/res/drawable/ic_school.xml" value="0.138" />
+        <entry key="app/src/main/res/drawable/ic_send.xml" value="0.138" />
+        <entry key="app/src/main/res/drawable/ic_star.xml" value="0.138" />
+        <entry key="app/src/main/res/drawable/ic_work.xml" value="0.138" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.3104166666666667" />
         <entry key="app/src/main/res/layout/custom_layout.xml" value="0.1" />
       </map>
