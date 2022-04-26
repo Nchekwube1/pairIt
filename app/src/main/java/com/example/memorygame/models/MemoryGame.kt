@@ -1,6 +1,6 @@
 package com.example.memorygame.models
 
-class MemoryGame(boardSize:BoardSize) {
+class MemoryGame(val boardSize:BoardSize) {
   val cards: List<MemoryCard>
     var numPairs = 0
   private var indexOfSelectedCard: Int? = null
@@ -11,6 +11,10 @@ init {
         MemoryCard(it)
     }
 }
+
+    fun hasWonGame(): Boolean {
+        return  numPairs == boardSize.getNumPairs()
+    }
 
     fun flipCard(position:Int):Boolean{
         var foundMatch = false
@@ -47,4 +51,11 @@ init {
             }
         }
     }
+
+    fun isCardFaceUp(position: Int): Boolean {
+        return  cards[position].isFaceUp
+
+    }
+
+
 }
