@@ -8,8 +8,8 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_custom_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:cardCornerRadius="8dp"
         app:cardElevation="8dp">
 
@@ -20,7 +20,7 @@
             android:layout_gravity="center"
             android:background="@color/white"
             android:contentDescription="@string/app_name"
-            android:scaleType="centerInside"
+            android:scaleType="centerCrop"
             app:srcCompat="@drawable/ic_launcher_background" />
     </androidx.cardview.widget.CardView>
 </LinearLayout>

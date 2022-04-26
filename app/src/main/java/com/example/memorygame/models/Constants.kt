@@ -1,7 +1,7 @@
 package com.example.memorygame.models
 
 import com.example.memorygame.R
-
+const val EXTRA_BOARD_SIZE = "EXTRA_BOARD_SIZE"
 val DEFAULT_ICONS = listOf(
     R.drawable.ic_face,
     R.drawable.ic_flash,
