@@ -2,7 +2,9 @@ package com.example.memorygame
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.memorygame.models.BoardSize
@@ -12,7 +14,9 @@ import com.example.memorygame.models.MemoryGame
 
 class MainActivity : AppCompatActivity() {
 
-    private var boardSize:BoardSize = BoardSize.HARD
+    private var boardSize:BoardSize = BoardSize.EASY
+  private  lateinit var memoryGame:MemoryGame
+  private  lateinit var adapter:MemoryBoardAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,9 +24,26 @@ class MainActivity : AppCompatActivity() {
         val movesTV = findViewById<TextView>(R.id.tv_moves)
         val pairsTV = findViewById<TextView>(R.id.tv_pairs)
         val itemsRV = findViewById<RecyclerView>(R.id.rv_card_items)
-   val memoryGame = MemoryGame(boardSize)
+
+
+         memoryGame = MemoryGame(boardSize)
+
         itemsRV.layoutManager = GridLayoutManager(this, boardSize.getWidth())
-        itemsRV.adapter = MemoryBoardAdapter(this,boardSize, memoryGame.cards)
+       adapter= MemoryBoardAdapter(this,boardSize, memoryGame.cards,
+         object :MemoryBoardAdapter.CardClickedListener{
+             override fun onCardClicked(position: Int) {
+                 updateGameOnFlip(position)
+             }
+         }
+            )
+        itemsRV.adapter = adapter
+
         itemsRV.setHasFixedSize(true)
     }
+
+    private fun updateGameOnFlip(position: Int) {
+        memoryGame.flipCard(position)
+        adapter.notifyDataSetChanged()
+    }
+
 }

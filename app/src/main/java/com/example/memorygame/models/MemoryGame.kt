@@ -2,8 +2,8 @@ package com.example.memorygame.models
 
 class MemoryGame(boardSize:BoardSize) {
   val cards: List<MemoryCard>
-    val numPairs = 0
-
+    var numPairs = 0
+  private var indexOfSelectedCard: Int? = null
 init {
     val chosenImages = DEFAULT_ICONS.shuffled().take(boardSize.getNumPairs())
     val randomisedList  = (chosenImages +chosenImages).shuffled()
@@ -11,4 +11,40 @@ init {
         MemoryCard(it)
     }
 }
+
+    fun flipCard(position:Int):Boolean{
+        var foundMatch = false
+        val card = cards[position]
+
+        if(indexOfSelectedCard == null){
+            restoreCards()
+            indexOfSelectedCard = position
+        }else{
+            foundMatch  = checkForMatch(indexOfSelectedCard!!,position)
+            indexOfSelectedCard = null
+
+        }
+
+
+        card .isFaceUp = !card.isFaceUp
+
+        return  foundMatch
+    }
+
+    private fun checkForMatch(index1:Int, index2:Int) :Boolean{
+        val checker = cards[index1].identifier == cards[index2].identifier
+        cards[index1].isMatched = checker
+        cards[index2].isMatched = checker
+        if(checker) numPairs++
+        return  checker
+    }
+
+    private fun restoreCards() {
+        for (card in cards){
+            if(!card.isMatched){
+                card.isFaceUp = false
+
+            }
+        }
+    }
 }
