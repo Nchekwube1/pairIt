@@ -10,26 +10,36 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.memorygame.models.BoardSize
 import kotlin.math.min
 
-class ImagePickerAdapter(private val context: Context,
+class ImagePickerAdapter(
+                      private val context: Context,
                          private val imageUris: List<Uri>,
-                         private val boardSize: BoardSize) : RecyclerView.Adapter<ImagePickerAdapter.ViewHolder>() {
+                         private val boardSize: BoardSize,
+                         private val imageClickListener:ImageClickListener
+                         )
+    : RecyclerView.Adapter<ImagePickerAdapter.ViewHolder>() {
 
-                             inner  class  ViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
+interface  ImageClickListener{
+    fun onPlaceHolderClicked(){
+
+    }
+}
+
+    inner  class  ViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
                                  private val ivCustomImage = itemView.findViewById<ImageView>(R.id.iv_custom_image)
-                                 fun bind(uri: Uri){
+        fun bind(uri: Uri){
                                     ivCustomImage.setImageURI(uri)
                                      ivCustomImage.setOnClickListener(null)
                                  }
-                              fun bind(){
-     ivCustomImage.setOnClickListener{
-
+        fun bind(){
+                                           ivCustomImage.setOnClickListener{
+                                        imageClickListener.onPlaceHolderClicked()
      }
                                 }
                              }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
       val view =   LayoutInflater.from(context).inflate(R.layout.card_imsge,parent,false)
-val cardWidth = parent.width / boardSize.getWidth()
+        val cardWidth = parent.width / boardSize.getWidth()
         val cardHeight = parent.width / boardSize.getHeight()
         val cardSideLength = min(cardHeight, cardWidth)
         val layoutParams  = view.findViewById<ImageView>(R.id.iv_custom_image ).layoutParams
@@ -40,9 +50,9 @@ val cardWidth = parent.width / boardSize.getWidth()
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-       if(position < imageUris.size){
+              if(position < imageUris.size){
            holder.bind(imageUris[position])
-       }else{
+               }else{
            holder.bind()
        }
     }
