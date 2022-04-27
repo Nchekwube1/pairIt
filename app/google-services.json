@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "68037079294",
+    "project_id": "kotlin-game-app",
+    "storage_bucket": "kotlin-game-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:68037079294:android:36bf9148ea0ffade6df5af",
+        "android_client_info": {
+          "package_name": "com.example.memorygame"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "68037079294-uj7vplkvvoskj3aha2dadf4a9lacp6h4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB47IjJYSBF_iQjNzjuWEWmoFe1MoTUvwI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "68037079294-uj7vplkvvoskj3aha2dadf4a9lacp6h4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
