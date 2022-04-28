@@ -117,14 +117,35 @@ class CreateActivity : AppCompatActivity() {
             }
 
             private fun saveDataToFirebase() {
-                        var didEncounterErr = false
                         val customGameName = etCreateGame.text.toString()
+                        btnCreateGame.isEnabled = false
+                        db.collection("games").document(customGameName).get().addOnSuccessListener {
+                                    document ->
+                                    if(document != null && document.data != null ){
+                                                AlertDialog.Builder(this)
+                                                            .setTitle("Name already exists")
+                                                            .setPositiveButton("OK", null)
+                                                            .show()
+                                    }else{
+                                                handleImageUploading(customGameName)
+ 
+                                    }
+                        }.addOnFailureListener{exception->
+                                    btnCreateGame.isEnabled = true
+                                    Toast.makeText(this, "An error occurred while saving memory game $exception", Toast.LENGTH_LONG).show()
+                        }
+
+
+            }
+
+            private fun handleImageUploading(gameName: String) {
+                        var didEncounterErr = false
                         val uploadedImageUrls: MutableList<String> = mutableListOf<String>()
                         Toast.makeText(this, "Saving data to firebase", Toast.LENGTH_LONG).show()
                         for ((index, photoUri) in chosenImageUris.withIndex()) {
                                     val imageByteArray = getImageByteArray(photoUri)
                                     val filePath =
-                                                "images/$customGameName/${System.currentTimeMillis()}-${index}.jpg"
+                                                "images/$gameName/${System.currentTimeMillis()}-${index}.jpg"
                                     val photoReference = storage.reference.child(filePath)
                                     photoReference.putBytes(imageByteArray)
                                                 .continueWithTask { photoUploadTask ->
@@ -158,12 +179,13 @@ class CreateActivity : AppCompatActivity() {
                                                             ).show()
                                                             if (uploadedImageUrls.size == chosenImageUris.size) {
                                                                         handleAllImagesUploaded(
-                                                                                    customGameName,
+                                                                                    gameName,
                                                                                     uploadedImageUrls
                                                                         )
                                                             }
                                                 }
                         }
+
             }
 
             private fun handleAllImagesUploaded(gameName: String, imageUrls: MutableList<String>) {
