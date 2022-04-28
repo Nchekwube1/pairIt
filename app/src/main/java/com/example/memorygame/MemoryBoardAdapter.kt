@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.memorygame.models.BoardSize
 import com.example.memorygame.models.MemoryCard
+import com.squareup.picasso.Picasso
 import kotlin.math.min
 
 class MemoryBoardAdapter(
@@ -32,7 +33,17 @@ class MemoryBoardAdapter(
 
         fun bind(position: Int) {
             val memCard:MemoryCard = cards[position]
-            imageBtn.setImageResource(if (memCard.isFaceUp ) memCard.identifier else R.drawable.ic_launcher_background)
+                    if(memCard.isFaceUp){
+                                if(memCard.imageUrl!= null){
+                                            Picasso.get().load(memCard.imageUrl).into(imageBtn)
+                                }else{
+                                            imageBtn.setImageResource(memCard.identifier)
+                                }
+                    }else{
+                                imageBtn.setImageResource(R.drawable.ic_launcher_background)
+
+                    }
+
             imageBtn.alpha = if (memCard.isMatched ) 0.4f else 1.0f
      val colorStateList: ColorStateList? = if(memCard.isMatched) ContextCompat.getColorStateList(context, R.color.gray) else null
 

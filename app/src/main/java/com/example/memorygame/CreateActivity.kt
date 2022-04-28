@@ -270,16 +270,7 @@ class CreateActivity : AppCompatActivity() {
 
             override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 
-                        if(requestCode == PICK_PHOTO_CODE && resultCode == Activity.RESULT_OK){
-                                    val customGameName = data?.getStringExtra(EXTRA_GAME_NAME)
-                                    if(customGameName == null){
-                                                Toast.makeText(this,"Custom name returned null",Toast.LENGTH_LONG).show()
-                                                return
-                                    }
-                                    downloadGame(customGameName)
 
-
-                        }
                         super.onActivityResult(requestCode, resultCode, data)
 
                         if (requestCode != PICK_PHOTO_CODE || resultCode != Activity.RESULT_OK || data == null) {
@@ -317,10 +308,6 @@ class CreateActivity : AppCompatActivity() {
 
                                     btnCreateGame.isEnabled = shouldEnableSaveButton()
                         }
-            }
-
-            private fun downloadGame(gameName: String) {
-
             }
 
             private fun shouldEnableSaveButton(): Boolean {

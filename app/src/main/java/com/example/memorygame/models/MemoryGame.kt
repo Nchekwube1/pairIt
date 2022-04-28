@@ -1,15 +1,23 @@
 package com.example.memorygame.models
 
-class MemoryGame(val boardSize:BoardSize) {
+class MemoryGame(val boardSize: BoardSize, customImages: List<String>?) {
   val cards: List<MemoryCard>
     var numPairs = 0
   private var indexOfSelectedCard: Int? = null
 init {
-    val chosenImages = DEFAULT_ICONS.shuffled().take(boardSize.getNumPairs())
-    val randomisedList  = (chosenImages +chosenImages).shuffled()
-    cards=    randomisedList.map {
-        MemoryCard(it)
+    if(customImages == null){
+        val chosenImages = DEFAULT_ICONS.shuffled().take(boardSize.getNumPairs())
+        val randomisedList  = (chosenImages +chosenImages).shuffled()
+        cards=    randomisedList.map {
+            MemoryCard(it)
+        }
+    }else{
+        val randomisedImages = (customImages + customImages).shuffled()
+        cards=    randomisedImages.map {
+            MemoryCard(it.hashCode(),it)
+        }
     }
+
 }
 
     fun hasWonGame(): Boolean {
