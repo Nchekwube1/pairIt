@@ -17,10 +17,8 @@ import android.text.InputFilter
 import android.text.TextWatcher
 import android.util.Log
 import android.view.MenuItem
-import android.widget.Adapter
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
+import android.view.View
+import android.widget.*
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.memorygame.models.*
@@ -44,6 +42,7 @@ class CreateActivity : AppCompatActivity() {
             private lateinit var rvCreateGame: RecyclerView
             private lateinit var etCreateGame: EditText
             private lateinit var btnCreateGame: Button
+            private lateinit var pbCreateGame:ProgressBar
 
             private lateinit var adapter: ImagePickerAdapter
             private lateinit var boardSize: BoardSize
@@ -58,6 +57,7 @@ class CreateActivity : AppCompatActivity() {
                         rvCreateGame = findViewById(R.id.rv_create_game)
                         etCreateGame = findViewById(R.id.et_custom_name)
                         btnCreateGame = findViewById(R.id.btn_create_custom)
+                        pbCreateGame = findViewById(R.id.pb_upload_game)
 
 
                         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -119,6 +119,7 @@ class CreateActivity : AppCompatActivity() {
             private fun saveDataToFirebase() {
                         val customGameName = etCreateGame.text.toString()
                         btnCreateGame.isEnabled = false
+
                         db.collection("games").document(customGameName).get().addOnSuccessListener {
                                     document ->
                                     if(document != null && document.data != null ){
@@ -139,6 +140,7 @@ class CreateActivity : AppCompatActivity() {
             }
 
             private fun handleImageUploading(gameName: String) {
+                        pbCreateGame.visibility = View.VISIBLE
                         var didEncounterErr = false
                         val uploadedImageUrls: MutableList<String> = mutableListOf<String>()
                         Toast.makeText(this, "Saving data to firebase", Toast.LENGTH_LONG).show()
@@ -166,12 +168,14 @@ class CreateActivity : AppCompatActivity() {
                                                                         return@addOnCompleteListener
                                                             }
                                                             if (didEncounterErr) {
+                                                                        pbCreateGame.visibility = View.GONE
                                                                         return@addOnCompleteListener
                                                             }
 
                                                             val downloadUrl =
                                                                         downloadUrlTask.result.toString()
                                                             uploadedImageUrls.add(downloadUrl)
+                                                            pbCreateGame.progress = uploadedImageUrls.size * 100/ chosenImageUris.size
                                                             Toast.makeText(
                                                                         this,
                                                                         "Upload finished",
@@ -197,6 +201,7 @@ class CreateActivity : AppCompatActivity() {
                                                             Toast.makeText(this, "An error occurred while saving $gameName to firestore", Toast.LENGTH_LONG).show()
                                                             return@addOnCompleteListener
                                                 }
+                                                pbCreateGame.visibility = View.GONE
                                                 Toast.makeText(this, "successfully created game $gameName", Toast.LENGTH_LONG).show()
                                                 AlertDialog.Builder(this)
                                                             .setTitle("Upload complete!, Lets play your game $gameName")
@@ -264,6 +269,17 @@ class CreateActivity : AppCompatActivity() {
             }
 
             override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+
+                        if(requestCode == PICK_PHOTO_CODE && resultCode == Activity.RESULT_OK){
+                                    val customGameName = data?.getStringExtra(EXTRA_GAME_NAME)
+                                    if(customGameName == null){
+                                                Toast.makeText(this,"Custom name returned null",Toast.LENGTH_LONG).show()
+                                                return
+                                    }
+                                    downloadGame(customGameName)
+
+
+                        }
                         super.onActivityResult(requestCode, resultCode, data)
 
                         if (requestCode != PICK_PHOTO_CODE || resultCode != Activity.RESULT_OK || data == null) {
@@ -301,6 +317,10 @@ class CreateActivity : AppCompatActivity() {
 
                                     btnCreateGame.isEnabled = shouldEnableSaveButton()
                         }
+            }
+
+            private fun downloadGame(gameName: String) {
+
             }
 
             private fun shouldEnableSaveButton(): Boolean {
